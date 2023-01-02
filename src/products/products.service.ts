@@ -15,7 +15,7 @@ export class ProductsService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} product`;
+    return this.prismaService.product.findFirst({ where: { id } });
   }
 
   update(id: number, data: Prisma.ProductUpdateInput) {
