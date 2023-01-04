@@ -10,9 +10,16 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id       Int    @id @default(autoincrement())
+  name     String @unique @db.VarChar(100)
+  email    String @db.VarChar(100)
+  password String @db.VarChar(100)
+}
+
 model Product {
   id          Int     @id @default(autoincrement())
   name        String  @unique @db.VarChar(100)
-  description String  @db.VarChar(255)
+  description String? @db.VarChar(255)
   price       Decimal @db.Decimal(7, 2)
 }
