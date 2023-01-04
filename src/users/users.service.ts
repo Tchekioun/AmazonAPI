@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { NotFoundException } from '@nestjs/common/exceptions';
 import { Prisma, User } from '@prisma/client';
 import { PasswordService } from 'src/auth/services/password.service';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -42,7 +43,10 @@ export class UsersService {
     });
   }
   async findByEmail(email: string) {
-    return this.prismaService.user.findUnique({where:{email}});
+    const user = await this.prismaService.user.findUnique({ where: { email } });
+    if (!user)
+      throw new NotFoundException('This email does not belong to any user');
+    return user;
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
