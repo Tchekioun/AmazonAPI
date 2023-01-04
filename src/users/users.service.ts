@@ -31,8 +31,18 @@ export class UsersService {
     });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(id: number): Promise<Omit<User, 'password'>> {
+    return this.prismaService.user.findFirst({
+      where: { id },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+      },
+    });
+  }
+  async findByEmail(email: string) {
+    return this.prismaService.user.findUnique({where:{email}});
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
