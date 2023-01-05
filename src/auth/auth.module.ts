@@ -8,6 +8,7 @@ import { env } from 'process';
 import { LocalStrategy } from './strategies/local.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { PasswordService } from './services/password.service';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -18,7 +19,11 @@ import { PasswordService } from './services/password.service';
       signOptions: { expiresIn: '120s' },
     }),
   ],
-  providers: [AuthService, LocalStrategy, JwtStrategy],
+  providers: [
+    AuthService,
+    LocalStrategy,
+    { provide: APP_GUARD, useClass: JwtStrategy },
+  ],
   controllers: [AuthController],
   exports: [PasswordService],
 })
